@@ -6,8 +6,18 @@
   </div>
 
   <div class="stock" v-for="stock in stocks" :key="stock.id">
-    <span>{{ stock.name }}</span> <span class="delete"><button @click="removeStock(stock.id)">X</button></span>
+    <div class="stock-line">
+      <span class="stock-name">{{ stock.stock_name }}</span>
+      <hr>
+      <div>{{ stock.results }}</div>
+      <span class="delete"><button @click="removeStock(stock.id)">X</button></span>
+    </div>
+    <!-- <div class="details-line">
+      <span>{{ stock.results}}</span>
+    </div> -->
   </div>
+  <!-- <span>{{ stocks }}</span> -->
+  <!-- <span>{{ "hello" }}</span> -->
 </template>
 
 <script>
@@ -21,18 +31,41 @@ export default {
       stocks: []
     }
   },
+  async created () {
+    const response = await fetch("https://68bu66vaxf.execute-api.us-east-1.amazonaws.com/stocks")
+    this.stocks = await response.json()
+  },
   methods: {
-    addStock() {
+    async addStock() {
       let stockID = Math.floor(Math.random() * (9999999999 - 100000000) + 100000000)
       let newStock = {
         id: stockID,
-        name: this.newStockInput
+        stock_name: this.newStockInput
       }
+
+      await fetch("https://68bu66vaxf.execute-api.us-east-1.amazonaws.com/stocks", {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newStock)
+      })
+
       this.stocks.push(newStock)
       this.newStockInput = ""
+      window.location.reload();
     },
 
-    removeStock(stockID) {
+    async removeStock(stockID) {
+       
+      await fetch("https://68bu66vaxf.execute-api.us-east-1.amazonaws.com/stocks", {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({id: stockID})
+      })
+
       this.stocks = this.stocks.filter(s => s.id !== stockID)
     }
   }
@@ -58,6 +91,10 @@ button, input {
   margin: 5px;
 }
 
+button {
+  font-size: large;
+}
+
 .add-stock-wrapper {
   display: flex;
 }
@@ -65,6 +102,7 @@ button, input {
 .add-stock-wrapper input {
   flex: 1;
 }
+
 
 .stock {
   display: flex;
@@ -75,4 +113,9 @@ button, input {
   margin: 5px 10px;
   padding: 10px 10px;
 }
+
+.stock-name {
+  font-size: x-large;
+}
+
 </style>
