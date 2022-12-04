@@ -7,9 +7,15 @@
 
   <div class="stock" v-for="stock in stocks" :key="stock.id">
     <div class="stock-line">
-      <span class="stock-name">{{ stock.stock_name }}</span>
+    <!-- <div> -->
+      <div class="stock-name">{{ stock.stock_name }}</div>
       <hr>
-      <div>{{ stock.results }}</div>
+      <!-- <div>{{ stock.results }}</div> -->
+      <div> {{"Opening Price: "}} {{ stock.o }}</div>
+      <div> {{"Closing Price: "}} {{ stock.c }}</div>
+      <div> {{"Highest Price: "}} {{ stock.h }}</div>
+      <div> {{"Lowest Price: "}} {{ stock.l }}</div>
+      <div> {{"Volume traded: "}} {{ stock.l }}</div>
       <span class="delete"><button @click="removeStock(stock.id)">X</button></span>
     </div>
     <!-- <div class="details-line">
@@ -80,7 +86,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-  max-width: 600px;
+  max-width: 450px;
   margin: 0 auto;
 }
 
@@ -112,6 +118,10 @@ button {
   border-radius: 10px;
   margin: 5px 10px;
   padding: 10px 10px;
+}
+
+.stock-line {
+  flex: 1;
 }
 
 .stock-name {
