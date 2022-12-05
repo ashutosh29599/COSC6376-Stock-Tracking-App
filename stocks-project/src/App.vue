@@ -17,7 +17,7 @@
       <div> {{"Closing Price: "}} {{ stock.c }}</div>
       <div> {{"Highest Price: "}} {{ stock.h }}</div>
       <div> {{"Lowest Price: "}} {{ stock.l }}</div>
-      <div> {{"Volume traded: "}} {{ stock.l }}</div>
+      <div> {{"Volume traded: "}} {{ stock.v }}</div>
       <span class="delete"><button @click="removeStock(stock.id)">X</button></span>
     </div>
     <!-- <div class="details-line">
@@ -132,5 +132,6 @@ button {
 .stock-name {
   font-size: x-large;
 }
+
 
 </style>
