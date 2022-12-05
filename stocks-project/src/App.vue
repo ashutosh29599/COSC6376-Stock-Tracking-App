@@ -2,6 +2,7 @@
   <h1>Stock History App</h1>
   <div class="add-stock-wrapper">
     <input type="text" v-model="newStockInput" @keydown.enter="addStock">
+    <input type="date" v-model="defaultDate">
     <button @click="addStock">Add Stock</button>
   </div>
 
@@ -9,6 +10,7 @@
     <div class="stock-line">
     <!-- <div> -->
       <div class="stock-name">{{ stock.stock_name }}</div>
+      <div>{{ stock.date }}</div>
       <hr>
       <!-- <div>{{ stock.results }}</div> -->
       <div> {{"Opening Price: "}} {{ stock.o }}</div>
@@ -34,19 +36,22 @@ export default {
   data() {
     return {
       newStockInput: "",
-      stocks: []
+      stocks: [],
+      defaultDate: '2022-11-29'
     }
   },
   async created () {
     const response = await fetch("https://68bu66vaxf.execute-api.us-east-1.amazonaws.com/stocks")
     this.stocks = await response.json()
+    this.stocks = this.stocks.sort((a, b) => a.name - b.name );
   },
   methods: {
     async addStock() {
       let stockID = Math.floor(Math.random() * (9999999999 - 100000000) + 100000000)
       let newStock = {
         id: stockID,
-        stock_name: this.newStockInput
+        stock_name: this.newStockInput,
+        date: this.defaultDate 
       }
 
       await fetch("https://68bu66vaxf.execute-api.us-east-1.amazonaws.com/stocks", {
